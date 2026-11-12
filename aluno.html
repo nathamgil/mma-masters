@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Área do aluno · MMA Masters</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0C0C0C">
+<link rel="icon" href="fotos/selo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=Saira+Extra+Condensed:wght@800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/estilo.css?v=20261112182724">
+</head>
+<body>
+<main id="tela-login" class="login">
+  <form class="login-caixa" id="form-login" novalidate>
+    <h1>Área do <span class="vermelho">aluno</span></h1>
+    <p>Seus horários, seu check-in e os avisos da academia.</p>
+    <div class="credencial" role="note"><b>Acesso de demonstração</b>Usuário: <code>aluno</code> · Senha: <code>masters</code></div>
+    <label for="l-user">Usuário</label><input type="text" id="l-user" autocomplete="username" autocapitalize="none">
+    <label for="l-senha">Senha</label><input type="password" id="l-senha" autocomplete="current-password">
+    <button class="bt bt-vermelho bt-largo" type="submit" style="margin-top:18px">Entrar</button>
+    <div id="login-erro" aria-live="polite"></div>
+    <p style="margin-top:16px;font-size:16px"><a href="index.html" style="color:#B91F26">Voltar para o site</a></p>
+  </form>
+</main>
+
+<div id="tela-aluno" class="claro" hidden>
+  <header class="adm-topo"><div class="embrulho"><b>MMA Masters · aluno</b><span><a href="index.html">Site</a> &nbsp; <button id="sair" type="button">Sair</button></span></div></header>
+  <main class="adm-corpo"><div class="embrulho" id="corpo"></div></main>
+</div>
+
+<script src="assets/dados.js?v=20261112182724"></script>
+<script>
+(function () {
+  'use strict';
+  var esc = MM.esc, $ = function (s) { return document.querySelector(s); };
+  function entrar() { $('#tela-login').hidden = true; $('#tela-aluno').hidden = false; desenha(); }
+  try { if (sessionStorage.getItem('mm_aluno')) entrar(); } catch (e) { /* */ }
+  $('#form-login').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if ($('#l-user').value.trim().toLowerCase() === 'aluno' && $('#l-senha').value === 'masters') { try { sessionStorage.setItem('mm_aluno', '1'); } catch (er) { /* */ } entrar(); }
+    else $('#login-erro').innerHTML = '<p class="erro">Usuário ou senha não conferem. Use os dados de demonstração acima.</p>';
+  });
+  $('#sair').addEventListener('click', function () { try { sessionStorage.removeItem('mm_aluno'); } catch (e) { /* */ } location.reload(); });
+
+  function eu() { return MM.alunos().filter(function (a) { return a.id === 'demo'; })[0]; }
+  function desenha() {
+    var a = eu();
+    if (!a) { $('#corpo').innerHTML = '<div class="caixa"><p>Aluno de demonstração não encontrado. Peça à recepção para voltar aos dados de exemplo no painel.</p></div>'; return; }
+    var h = MM.hoje(), mes = h.slice(0, 7);
+    var noMes = a.presencas.filter(function (d) { return d.slice(0, 7) === mes; }).length;
+    var fezHoje = a.presencas.indexOf(h) >= 0;
+    // últimos 14 dias
+    var dias = []; for (var i = 13; i >= 0; i--) { var d = MM.soma(h, -i); dias.push('<span class="' + (a.presencas.indexOf(d) >= 0 ? 'foi' : '') + '" title="' + MM.dataCurta(d) + '">' + MM.deIso(d).getDate() + '</span>'); }
+    // próximas aulas das modalidades do aluno (7 dias)
+    var g = MM.grade(), prox = [];
+    for (var k = 0; k < 7 && prox.length < 6; k++) {
+      var dt = MM.soma(h, k), dow = MM.deIso(dt).getDay();
+      g.filter(function (x) { return x.dia === dow && a.mods.indexOf(x.mod) >= 0 && x.turma === a.turma; }).forEach(function (x) {
+        if (k === 0) { var agora = new Date(); if (+x.hora.slice(0, 2) < agora.getHours()) return; }
+        prox.push({ data: dt, aula: x });
+      });
+    }
+    var av = MM.avisos();
+    $('#corpo').innerHTML =
+      '<div class="cartao-aluno"><div><span class="rotulo">Turma ' + MM.turma(a.turma) + '</span><h2>' + esc(a.nome) + '</h2><p style="margin:0">' + a.mods.map(function (m) { return MM.mod(m).nome; }).join(' · ') + '</p></div>' +
+      '<div class="presenca"><b>' + noMes + '</b>treinos no mês</div></div>' +
+      '<div class="caixa"><h3>Check-in de hoje</h3>' + (fezHoje ? '<p><b>Presença marcada hoje.</b> Bom treino!</p>' : '<p>Chegou na academia? Marque sua presença.</p><button class="bt bt-vermelho" id="checkin" type="button">Fazer check-in</button>') +
+      '<p style="margin:16px 0 4px;font-weight:700">Últimos 14 dias</p><div class="semana">' + dias.join('') + '</div></div>' +
+      '<div class="caixa"><h3>Suas próximas aulas</h3>' + (prox.length ? prox.map(function (p) {
+        return '<div class="linha-adm"><div><div class="t">' + MM.dataCurta(p.data) + ' · ' + p.aula.hora.replace(':00', 'h') + ' · ' + MM.mod(p.aula.mod).nome + '</div><div class="s">Turma ' + MM.turma(p.aula.turma) + (p.aula.prof ? ' · ' + esc(p.aula.prof) : '') + '</div></div></div>';
+      }).join('') : '<p>Sem aulas suas na grade desta semana.</p>') + '<p class="s" style="font-size:16px;margin-top:10px">Grade de demonstração: horários a confirmar com a academia. <a href="horarios.html">Ver a grade toda</a></p></div>' +
+      '<div class="caixa"><h3>Avisos da academia</h3>' + (av.length ? av.map(function (x) { return '<div class="linha-adm"><div><div class="s">' + MM.dataCurta(x.data) + '</div><div>' + esc(x.texto) + '</div></div></div>'; }).join('') : '<p>Nenhum aviso.</p>') + '</div>' +
+      '<div class="caixa"><h3>Recepção</h3><p>Dúvida sobre horário, troca de turma ou mensalidade? Fale direto com a recepção.</p><a class="mini-bt forte" target="_blank" rel="noopener" href="' + MM.linkWa('Olá! Sou aluno(a) da MMA Masters (' + a.nome + ') e tenho uma dúvida.') + '">WhatsApp da recepção</a></div>';
+    var c = $('#checkin');
+    if (c) c.addEventListener('click', function () {
+      var l = MM.alunos(); l.forEach(function (x) { if (x.id === 'demo' && x.presencas.indexOf(h) < 0) x.presencas.push(h); });
+      MM.grava('alunos', l); desenha();
+    });
+  }
+})();
+</script>
+</body>
+</html>
