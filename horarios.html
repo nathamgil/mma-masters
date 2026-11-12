@@ -5,45 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Horários · MMA Masters Salvador</title>
 <meta name="description" content="Grade de horários da MMA Masters Salvador: MMA, BJJ, Muay Thai, Wrestling, Kickboxing, Judô e Boxe. Turmas adulto, kids e feminina.">
-<meta name="theme-color" content="#0C0C0C">
+<meta name="theme-color" content="#000000">
 <link rel="icon" href="fotos/selo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=Saira+Extra+Condensed:wght@800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/estilo.css?v=20261112182724">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;700&family=Saira+Extra+Condensed:wght@800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/estilo.css?v=20261112192906">
 </head>
 <body data-pagina="horarios">
 <div id="topo"></div>
 <main id="conteudo">
   <section class="pagina-topo">
     <div class="embrulho">
-      <span class="rotulo">Grade da semana</span>
-      <h1>Horá<span class="vermelho">rios</span></h1>
-      <p class="lead">Filtre pela modalidade ou pela turma. O dia de hoje fica marcado em vermelho.</p>
-      <span class="confirmar">Grade de demonstração: horários a confirmar com a academia</span>
-      <div class="filtros" id="filtro-mod" role="group" aria-label="Filtrar por modalidade"></div>
-      <div class="filtros" id="filtro-turma" role="group" aria-label="Filtrar por turma"></div>
+      <h1>Rounds da <span class="vermelho">semana</span></h1>
+      <p class="lead">Cada aula é um round. Escolha o dia (hoje já vem marcado) e filtre pela modalidade ou pela turma.</p>
+      <p class="confirmar">Grade de demonstração: horários a confirmar com a academia</p>
+      <div class="dias-abas" id="abas-dia" role="tablist" aria-label="Dia da semana"></div>
+      <details class="filtrar">
+        <summary>Filtrar por modalidade ou turma</summary>
+        <div class="filtros" id="filtro-mod" role="group" aria-label="Filtrar por modalidade"></div>
+        <div class="filtros" id="filtro-turma" role="group" aria-label="Filtrar por turma"></div>
+      </details>
     </div>
   </section>
-  <section class="embrulho" style="padding-bottom:72px">
-    <div class="grade" id="grade"></div>
+  <section class="embrulho rounds-sec">
+    <div id="grade" aria-live="polite"></div>
   </section>
-  <div class="fita" aria-hidden="true">
-    <div class="linha" data-desliza="1"><span>Escolha evoluir</span><span>Escolha lutar</span><span>Escolha MMA Masters</span><span>Escolha evoluir</span><span>Escolha lutar</span><span>Escolha MMA Masters</span></div>
-  </div>
-  <section class="experimental" id="experimental">
+  <section class="pesagem" id="experimental">
     <div class="embrulho">
-      <div>
-        <span class="rotulo" style="color:#fff">Primeiro treino</span>
-        <h2>Aula experimental</h2>
-        <p>Achou o horário? Marque a primeira aula. A recepção confirma pelo WhatsApp.</p>
+      <div class="pesagem-txt">
+        <h2>Achou o seu round?</h2>
+        <p>Preencha a ficha de pesagem da aula experimental. A recepção confirma o dia e o horário pelo WhatsApp.</p>
       </div>
       <div id="form-exp"></div>
     </div>
   </section>
 </main>
 <footer id="rodape"></footer>
-<script src="assets/dados.js?v=20261112182724"></script>
-<script src="assets/site.js?v=20261112182724"></script>
+<script src="assets/dados.js?v=20261112192906"></script>
+<script src="assets/site.js?v=20261112192906"></script>
 </body>
 </html>

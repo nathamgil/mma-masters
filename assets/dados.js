@@ -22,14 +22,16 @@
   };
 
   // As 7 modalidades da bio. Descrições são do esporte em geral, não da academia.
+  // tape = "card de luta": o que cada esporte usa (fato do esporte, não da academia).
+  // pe = golpes em pé · queda = projeção/queda · chao = luta no chão · kimono · foto = foto real do @mmamastersssa que combina.
   var MODALIDADES = [
-    { id: 'mma',    nome: 'MMA',        desc: 'Artes marciais mistas: em pé, na grade e no chão, tudo no mesmo treino.' },
-    { id: 'bjj',    nome: 'BJJ',        desc: 'Jiu-jítsu brasileiro, de kimono: raspagem, passagem, finalização.' },
-    { id: 'muay',   nome: 'Muay Thai',  desc: 'A arte das oito armas: socos, chutes, joelhadas e cotoveladas.' },
-    { id: 'wrestling', nome: 'Wrestling', desc: 'Queda, controle e base. O que decide quem fica por cima.' },
-    { id: 'kick',   nome: 'Kickboxing', desc: 'Socos e chutes em ritmo de round. Condicionamento lá em cima.' },
-    { id: 'judo',   nome: 'Judô',       desc: 'Projeção, equilíbrio e pegada. Disciplina desde a primeira aula.' },
-    { id: 'boxe',   nome: 'Boxe',       desc: 'Base, guarda, esquiva e combinação. Tem turma feminina.' }
+    { id: 'mma',    nome: 'MMA',        desc: 'Artes marciais mistas: em pé, na grade e no chão, tudo no mesmo treino.', tape: { pe: 1, queda: 1, chao: 1, kimono: 0 }, foto: 'fotos/treino-tatame.jpg', fotoAlt: 'Treino no tatame preto com o logo MMA Masters no chão' },
+    { id: 'bjj',    nome: 'BJJ',        desc: 'Jiu-jítsu brasileiro, de kimono: raspagem, passagem, finalização.', tape: { pe: 0, queda: 1, chao: 1, kimono: 1 }, foto: 'fotos/bjj-kimono.jpg', fotoAlt: 'Dois alunos de kimono treinando jiu-jítsu no chão' },
+    { id: 'muay',   nome: 'Muay Thai',  desc: 'A arte das oito armas: socos, chutes, joelhadas e cotoveladas.', tape: { pe: 1, queda: 0, chao: 0, kimono: 0 }, foto: 'fotos/sparring-jr-elefante.jpg', fotoAlt: 'Sparring de luvas em pé em frente à parede com a marca MMA Masters' },
+    { id: 'wrestling', nome: 'Wrestling', desc: 'Queda, controle e base. O que decide quem fica por cima.', tape: { pe: 0, queda: 1, chao: 1, kimono: 0 }, foto: 'fotos/luta-em-pe.jpg', fotoAlt: 'Dois alunos treinando queda no tatame vermelho' },
+    { id: 'kick',   nome: 'Kickboxing', desc: 'Socos e chutes em ritmo de round. Condicionamento lá em cima.', tape: { pe: 1, queda: 0, chao: 0, kimono: 0 }, foto: '', fotoAlt: '' },
+    { id: 'judo',   nome: 'Judô',       desc: 'Projeção, equilíbrio e pegada. Disciplina desde a primeira aula.', tape: { pe: 0, queda: 1, chao: 1, kimono: 1 }, foto: '', fotoAlt: '' },
+    { id: 'boxe',   nome: 'Boxe',       desc: 'Base, guarda, esquiva e combinação. Tem turma feminina.', tape: { pe: 1, queda: 0, chao: 0, kimono: 0 }, feminino: true, foto: 'fotos/feminino-boxe.jpg', fotoAlt: 'Aluna de costas com a camisa vermelha da MMA Masters' }
   ];
 
   var TURMAS = [
